@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arnab Mukherjee - Computational Material Scientist</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Floating Interactive Elements -->
+    <button id="sayHiBtn" class="say-hi-btn">SAY HI</button>
+    <button id="gameBtn" class="game-btn">🎮</button>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">arnab mukherjee</div>
+            <div class="nav-links">
+                <a href="#about">ABOUT</a>
+                <a href="#skills">skills</a>
+                <a href="#experience">experience</a>
+                <a href="#projects">PROJECTS</a>
+                <a href="#achievements">achievements</a>
+                <a href="#blog">blog</a>
+                <a href="#contact">CONTACT</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-name" id="heroName">ARNAB MUKHERJEE</h1>
+                <p class="hero-subtitle">computational material scientist, researcher, developer</p>
+                <p class="hero-tagline" id="heroTagline"></p>
+                <div class="hero-location">freiberg, germany</div>
+                <div class="hero-actions">
+                    <a href="#contact" class="btn btn--primary">get in touch</a>
+                    <a href="#projects" class="btn btn--outline">view work</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2>about</h2>
+            <div class="about-content">
+                <p>master's student in computational material science at tu bergakademie freiberg. bridging simulation, machine learning, and software engineering through research and development. passionate about physics-informed neural networks, uncertainty quantification, and data-driven modeling.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section section--alt">
+        <div class="container">
+            <h2>skills</h2>
+            <div class="skills-grid">
+                <div class="skill-group">
+                    <h3>programming</h3>
+                    <div class="skill-list">
+                        <span>python</span>
+                        <span>c++</span>
+                        <span>matlab</span>
+                        <span>linux-bash</span>
+                        <span>latex</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <h3>technical</h3>
+                    <div class="skill-list">
+                        <span>machine learning</span>
+                        <span>deep learning</span>
+                        <span>scientific ml</span>
+                        <span>simulation (fem)</span>
+                        <span>cae/cad (abaqus)</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <h3>specializations</h3>
+                    <div class="skill-list">
+                        <span>data-driven modeling</span>
+                        <span>image processing</span>
+                        <span>signal processing</span>
+                        <span>computational chemistry</span>
+                        <span>uncertainty quantification</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section">
+        <div class="container">
+            <h2>experience</h2>
+            <div class="experience-list">
+            
+                <div class="experience-item">
+                    <div class="experience-meta">
+                        <h3>wissenschaftliche hilfskraft</h3>
+                        <span class="experience-period">jun 2024 - jun 2025</span>
+                    </div>
+                    <h4>zehs, tu freiberg</h4>
+                    <p>developed deep learning architectures for automated defect classification from scanning acoustic microscopy</p>
+                </div>
+                <div class="experience-item">
+                    <div class="experience-meta">
+                        <h3>software engineer</h3>
+                        <span class="experience-period">jul 2022 - sep 2023</span>
+                    </div>
+                    <h4>ltim, india</h4>
+                    <p>improved individual insurance systems and drove usd 5m revenue increase through strategic planning</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section section--alt">
+        <div class="container">
+            <h2>featured work</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-meta">
+                        <span class="project-type">python framework</span>
+                        <span class="project-year">2024</span>
+                    </div>
+                    <h3>chemical kinetics analysis & model reduction</h3>
+                    <p>engineered a python framework with genetic algorithms and cantera to analyze and reduce complex chemical kinetic models</p>
+                    <a href="https://github.com/arnab-mkj/Chemical_Mechanism_Reduction_GA" target="_blank" class="project-link">view project →</a>
+                </div>
+                <div class="project-card">
+                    <div class="project-meta">
+                        <span class="project-type">jax implementation</span>
+                        <span class="project-year">2024</span>
+                    </div>
+                    <h3>physics-informed deep operator networks</h3>
+                    <p>developing a jax-based deeponet architecture for identifying differential equations and enhancing model accuracy</p>
+                    <a href="https://github.com/arnab-mkj/Data-driven-operator-learning" target="_blank" class="project-link">view project →</a>
+                </div>
+                <div class="project-card">
+                    <div class="project-meta">
+                        <span class="project-type">uncertainty quantification</span>
+                        <span class="project-year">2024</span>
+                    </div>
+                    <h3>bayesian neural network</h3>
+                    <p>implemented a bnn from scratch in pytorch for mnist classification, emphasizing uncertainty quantification</p>
+                    <a href="https://github.com/arnab-mkj/bayesian" target="_blank" class="project-link">view project →</a>
+                </div>
+                <div class="project-card">
+                    <div class="project-meta">
+                        <span class="project-type">web application</span>
+                        <span class="project-year">2024</span>
+                    </div>
+                    <h3>matrix visualization tool</h3>
+                    <p>interactive web-based tool for visualizing and analyzing matrix operations and transformations</p>
+                    <a href="https://github.com/arnab-mkj/matrix_vis_tool" target="_blank" class="project-link">view project →</a>
+                </div>
+                <div class="project-card">
+                    <div class="project-meta">
+                        <span class="project-type">c implementation</span>
+                        <span class="project-year">2024</span>
+                    </div>
+                    <h3>physics-informed neural networks</h3>
+                    <p>efficient c implementation of physics-informed neural networks for solving partial differential equations</p>
+                    <a href="#" class="project-link">view project →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements" class="section">
+        <div class="container">
+            <h2>publications</h2>
+            <div class="publications-list">
+                <div class="publication-item">
+                    <h3>low-velocity impact damage on gas turbine blades</h3>
+                    <p>journal of the institution of engineers, 2022</p>
+                    <a href="https://doi.org/10.1007/s40033-022-00372-8" target="_blank" class="publication-link">read paper →</a>
+                </div>
+                <div class="publication-item">
+                    <h3>3d-printed composite sensors</h3>
+                    <p>springer, 2023</p>
+                    <a href="http://dx.doi.org/10.1088/978-0-7503-5351-9ch6" target="_blank" class="publication-link">read paper →</a>
+                </div>
+                <div class="publication-item">
+                    <h3>mechanical properties of aluminium metal matrix composites</h3>
+                    <p>springer, 2023</p>
+                    <a href="http://dx.doi.org/10.1007/978-981-99-5982-2_9" target="_blank" class="publication-link">read paper →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="blog">
+        <div class="container">
+            <h2 class="section-title">Latest Blog Posts</h2>
+            <div class="blog-grid">
+                
+                <article class="blog-card card" data-post-id="2">
+                    <div class="card__body">
+                        <h3 class="blog-title">Coming Soon!</h3>
+                        <p class="blog-date">TBD</p>
+                        <p class="blog-excerpt">Stay Tuned!</p>
+                        <a href="YOUR_MEDIUM_ARTICLE_1_LINK" target="_blank" class="btn btn--outline">Read More on Medium</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>get in touch</h2>
+            <div class="contact-content">
+                <p>always open to discussing new opportunities, collaborations, or just having a chat about computational material science and machine learning.</p>
+                <div class="contact-links">
+                    <a href="mailto:amkjdeutsch1@gmail.com" class="contact-link">email</a>
+                    <a href="https://www.linkedin.com/in/arnab-mukherjee-05/" target="_blank" class="contact-link">linkedin</a>
+                    <a href="https://github.com/arnab-mkj" target="_blank" class="contact-link">github</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content chat-modal">
+            <div class="modal-header">
+                <h3>global chat</h3>
+                <div class="chat-username">you are: <span id="chatUsername"></span></div>
+                <button class="modal-close" id="closeChatBtn">&times;</button>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input-container">
+                <input type="text" id="chatInput" class="form-control" placeholder="type your message..." maxlength="200">
+                <button id="sendMessageBtn" class="btn btn--primary btn--sm">send</button>
+            </div>
+            <div class="chat-info">
+                <small>messages disappear after 12 hours • be respectful and have fun! 😊</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Modal -->
+    <div id="gameModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content game-modal">
+            <div class="modal-header">
+                <h3>tic-tac-toe</h3>
+                <button class="modal-close" id="closeGameBtn">&times;</button>
+            </div>
+            <div class="game-info">
+                <div class="game-status" id="gameStatus">your turn! (you are x)</div>
+                <div class="game-score">
+                    <span>you: <span id="playerScore">0</span></span>
+                    <span>computer: <span id="computerScore">0</span></span>
+                </div>
+            </div>
+            <div class="game-board" id="gameBoard">
+                <div class="game-cell" data-cell="0"></div>
+                <div class="game-cell" data-cell="1"></div>
+                <div class="game-cell" data-cell="2"></div>
+                <div class="game-cell" data-cell="3"></div>
+                <div class="game-cell" data-cell="4"></div>
+                <div class="game-cell" data-cell="5"></div>
+                <div class="game-cell" data-cell="6"></div>
+                <div class="game-cell" data-cell="7"></div>
+                <div class="game-cell" data-cell="8"></div>
+            </div>
+            <div class="game-actions">
+                <button id="resetGameBtn" class="btn btn--secondary">new game</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
