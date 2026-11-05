@@ -137,12 +137,13 @@
     (function rotator() {
         const el = $('#rotator');
         const phrases = [
+            'numerical solvers for physics',
+            'simulation code that scales',
+            'electromagnetic & optical simulations',
+            'finite-element models',
             'physics-informed neural networks',
-            'metalens design pipelines',
-            'neural operators for Maxwell\'s equations',
             'ray tracers from scratch',
-            'surrogates for RCWA & FDTD',
-            'simulation tools that scale'
+            'fast surrogates for slow solvers'
         ];
         if (reducedMotion) return;
         let pi = 0, ci = phrases[0].length, deleting = true;
@@ -541,6 +542,288 @@
         };
     })();
 
+
+    /* =========================================================
+       Lab tabs
+       ========================================================= */
+    const tabListeners = [];
+    function showTab(name) {
+        $$('.lab-tab').forEach(t => {
+            const on = t.id === 'tab-' + name;
+            t.classList.toggle('active', on);
+            t.setAttribute('aria-selected', on);
+            t.tabIndex = on ? 0 : -1;
+        });
+        $$('.lab-panel').forEach(p => {
+            const on = p.id === 'panel-' + name;
+            p.hidden = !on;
+            if (on) p.classList.add('visible');
+        });
+        tabListeners.forEach(fn => fn(name));
+    }
+    $$('.lab-tab').forEach((t, i, all) => {
+        t.addEventListener('click', () => showTab(t.id.replace('tab-', '')));
+        t.addEventListener('keydown', e => {
+            if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+            const next = all[(i + (e.key === 'ArrowRight' ? 1 : all.length - 1)) % all.length];
+            next.focus(); next.click();
+        });
+    });
+
+    /* =========================================================
+       PDE lab — Gray–Scott reaction–diffusion (explicit FD)
+       ========================================================= */
+    const rd = (() => {
+        const canvas = $('#rdCanvas');
+        const ctx = canvas.getContext('2d');
+        const W = 256, H = 160, N = W * H;
+        canvas.width = W; canvas.height = H;
+        const Du = 0.16, Dv = 0.08;   // stable for dt = 1 on the 5-point stencil
+        let u = new Float32Array(N), v = new Float32Array(N);
+        let u2 = new Float32Array(N), v2 = new Float32Array(N);
+        // periodic neighbour index tables
+        const L = new Int32Array(W), R = new Int32Array(W), U = new Int32Array(H), D = new Int32Array(H);
+        for (let i = 0; i < W; i++) { L[i] = (i - 1 + W) % W; R[i] = (i + 1) % W; }
+        for (let j = 0; j < H; j++) { U[j] = ((j - 1 + H) % H) * W; D[j] = ((j + 1) % H) * W; }
+        const img = ctx.createImageData(W, H);
+        const el = { F: $('#rdF'), k: $('#rdK'), speed: $('#rdSpeed') };
+        let F = 0.0545, K = 0.062, steps = 12, paused = false, active = true, inView = false, totalSteps = 0;
+        let pal = [];
+
+        function buildPalette() {
+            const bg = [4, 5, 10], c2 = hexToRgb(cssVar('--accent-2')), c1 = hexToRgb(cssVar('--accent'));
+            const stops = [[0, bg], [0.35, c2], [0.7, c1], [1, [255, 255, 255]]];
+            pal = new Uint8ClampedArray(256 * 3);
+            for (let i = 0; i < 256; i++) {
+                const t = i / 255;
+                let s = 0; while (s < stops.length - 2 && t > stops[s + 1][0]) s++;
+                const [t0, a] = stops[s], [t1, b] = stops[s + 1];
+                const f = Math.min(1, Math.max(0, (t - t0) / (t1 - t0)));
+                for (let c = 0; c < 3; c++) pal[i * 3 + c] = a[c] + (b[c] - a[c]) * f;
+            }
+        }
+
+        function seed(x, y, r) {
+            for (let j = -r; j <= r; j++) for (let i = -r; i <= r; i++) {
+                if (i * i + j * j > r * r) continue;
+                const idx = ((y + j + H) % H) * W + ((x + i + W) % W);
+                u[idx] = 0.5; v[idx] = 0.25 + Math.random() * 0.02;
+            }
+        }
+        function reset() {
+            u.fill(1); v.fill(0); totalSteps = 0;
+            for (let n = 0; n < 14; n++) seed((Math.random() * W) | 0, (Math.random() * H) | 0, 3 + (Math.random() * 4 | 0));
+            render();
+        }
+
+        function step() {
+            for (let j = 0; j < H; j++) {
+                const row = j * W, up = U[j], dn = D[j];
+                for (let i = 0; i < W; i++) {
+                    const p = row + i;
+                    const uu = u[p], vv = v[p];
+                    const lu = u[row + L[i]] + u[row + R[i]] + u[up + i] + u[dn + i] - 4 * uu;
+                    const lv = v[row + L[i]] + v[row + R[i]] + v[up + i] + v[dn + i] - 4 * vv;
+                    const uvv = uu * vv * vv;
+                    u2[p] = uu + Du * lu - uvv + F * (1 - uu);
+                    v2[p] = vv + Dv * lv + uvv - (F + K) * vv;
+                }
+            }
+            let t = u; u = u2; u2 = t; t = v; v = v2; v2 = t;
+            totalSteps++;
+        }
+
+        function render() {
+            const d = img.data;
+            for (let p = 0, o = 0; p < N; p++, o += 4) {
+                const c = Math.min(255, Math.max(0, (v[p] * 3.2 * 255) | 0)) * 3;
+                d[o] = pal[c]; d[o + 1] = pal[c + 1]; d[o + 2] = pal[c + 2]; d[o + 3] = 255;
+            }
+            ctx.putImageData(img, 0, 0);
+        }
+
+        let frames = 0, tAcc = 0, lastT = performance.now(), rate = 0;
+        function loop(now) {
+            requestAnimationFrame(loop);
+            if (!active || !inView || document.hidden) { lastT = now; return; }
+            if (!paused) {
+                const t0 = performance.now();
+                for (let s = 0; s < steps; s++) step();
+                tAcc += performance.now() - t0;
+                frames += steps;
+                render();
+            }
+            if (now - lastT > 500) {
+                rate = tAcc > 0 ? frames / (tAcc / 1000) : 0;
+                const fps = frames / ((now - lastT) / 1000);
+                $('#rdReadout').innerHTML =
+                    `grid ${W}×${H} · periodic · Δt = 1<br>` +
+                    `${(fps).toFixed(0)} steps/s on screen · solver ≈ ${(rate * N / 1e6).toFixed(0)} M cell-updates/s<br>` +
+                    `t = ${totalSteps.toLocaleString()} steps`;
+                frames = 0; tAcc = 0; lastT = now;
+            }
+        }
+
+        function sync() {
+            F = +el.F.value; K = +el.k.value; steps = +el.speed.value;
+            $('#rdFOut').textContent = F.toFixed(4);
+            $('#rdKOut').textContent = K.toFixed(4);
+            $('#rdSpeedOut').textContent = steps;
+        }
+        Object.values(el).forEach(i => i.addEventListener('input', () => {
+            sync();
+            if (i !== el.speed) $$('#rdPresets .filter').forEach(b => b.classList.remove('active'));
+        }));
+        $$('#rdPresets .filter').forEach(b => b.addEventListener('click', () => {
+            $$('#rdPresets .filter').forEach(x => x.classList.toggle('active', x === b));
+            el.F.value = b.dataset.f; el.k.value = b.dataset.k; sync(); reset();
+        }));
+        $('#rdPause').addEventListener('click', e => { paused = !paused; e.currentTarget.textContent = paused ? 'Resume' : 'Pause'; });
+        $('#rdReset').addEventListener('click', reset);
+
+        let drawing = false;
+        function paint(e) {
+            const r = canvas.getBoundingClientRect();
+            const x = Math.floor((e.clientX - r.left) / r.width * W), y = Math.floor((e.clientY - r.top) / r.height * H);
+            if (x >= 0 && x < W && y >= 0 && y < H) { seed(x, y, 4); if (paused) render(); }
+        }
+        canvas.addEventListener('pointerdown', e => { drawing = true; canvas.setPointerCapture(e.pointerId); paint(e); });
+        canvas.addEventListener('pointermove', e => { if (drawing) paint(e); });
+        canvas.addEventListener('pointerup', () => { drawing = false; });
+        canvas.addEventListener('pointercancel', () => { drawing = false; });
+
+        new IntersectionObserver(([e]) => { inView = e.isIntersecting; }, { rootMargin: '100px' }).observe(canvas);
+        tabListeners.push(name => { active = name === 'pde'; });
+        themeListeners.push(() => { buildPalette(); render(); });
+
+        buildPalette(); sync(); reset();
+        if (reducedMotion) { for (let s = 0; s < 3000; s++) step(); render(); paused = true; $('#rdPause').textContent = 'Resume'; }
+        requestAnimationFrame(loop);
+    })();
+
+    /* =========================================================
+       HPC lab — strong scaling of Monte Carlo π with Web Workers
+       ========================================================= */
+    const hpc = (() => {
+        const cores = Math.max(1, Math.min(16, navigator.hardwareConcurrency || 4));
+        $('#hpcCores').textContent = cores;
+        const chart = $('#hpcChart');
+        const tbody = $('#hpcTable tbody');
+        const nIn = $('#hpcN');
+        const runBtn = $('#hpcRun');
+        const supported = typeof Worker !== 'undefined' && typeof Blob !== 'undefined';
+        const workerSrc = `self.onmessage = e => {
+            const n = e.data.n; let x = e.data.seed >>> 0 || 1; let inside = 0;
+            for (let i = 0; i < n; i++) {
+                x ^= x << 13; x ^= x >>> 17; x ^= x << 5; const a = (x >>> 0) / 4294967296;
+                x ^= x << 13; x ^= x >>> 17; x ^= x << 5; const b = (x >>> 0) / 4294967296;
+                if (a * a + b * b < 1) inside++;
+            }
+            postMessage(inside);
+        };`;
+        let url = null, running = false;
+
+        const threadCounts = [];
+        for (let t = 1; t <= cores; t *= 2) threadCounts.push(t);
+        if (threadCounts[threadCounts.length - 1] !== cores) threadCounts.push(cores);
+
+        function syncN() { $('#hpcNOut').textContent = nIn.value + ' M'; }
+        nIn.addEventListener('input', syncN); syncN();
+
+        function job(worker, n, seed) {
+            return new Promise(res => { worker.onmessage = e => res(e.data); worker.postMessage({ n, seed }); });
+        }
+
+        async function runOnce(T, total) {
+            const workers = Array.from({ length: T }, () => new Worker(url));
+            // warm-up so worker start-up and JIT are not timed
+            await Promise.all(workers.map((w, i) => job(w, 200000, 99 + i)));
+            const per = Math.floor(total / T);
+            const t0 = performance.now();
+            const counts = await Promise.all(workers.map((w, i) => job(w, i === T - 1 ? total - per * (T - 1) : per, (Math.random() * 4294967295) >>> 0 || 7 + i)));
+            const ms = performance.now() - t0;
+            workers.forEach(w => w.terminate());
+            const inside = counts.reduce((a, b) => a + b, 0);
+            return { T, ms, pi: 4 * inside / total };
+        }
+
+        function drawChart(results) {
+            if (!results.length) {
+                chart.innerHTML = `<div class="chart-title">Speedup vs. threads</div><div class="chart-sub">Fixed total workload (strong scaling)</div>` +
+                    `<div class="hpc-empty">${supported ? 'Run the test to measure how well this problem scales on your machine.' : 'Web Workers are not available in this browser.'}</div>`;
+                return;
+            }
+            const narrow = chart.clientWidth < 420;
+            const VW = narrow ? 360 : 520, VH = narrow ? 260 : 300, m = { l: 36, r: 46, t: 14, b: 34 };
+            const pw = VW - m.l - m.r, ph = VH - m.t - m.b;
+            const maxT = threadCounts[threadCounts.length - 1];
+            const yMax = Math.max(maxT, ...results.map(r => r.speedup)) * 1.08;
+            const n = threadCounts.length, band = pw / n, bw = Math.min(46, band * 0.55);
+            const X = i => m.l + band * i + band / 2;
+            const Y = v => m.t + ph - (v / yMax) * ph;
+            const stepY = yMax > 10 ? 4 : yMax > 5 ? 2 : 1;
+            let g = '';
+            for (let v = 0; v <= yMax; v += stepY) g += `<line x1="${m.l}" x2="${VW - m.r}" y1="${Y(v)}" y2="${Y(v)}"/>`;
+            let axis = '';
+            for (let v = 0; v <= yMax; v += stepY) axis += `<text x="${m.l - 8}" y="${Y(v) + 4}" text-anchor="end">${v}×</text>`;
+            threadCounts.forEach((t, i) => { axis += `<text x="${X(i)}" y="${VH - m.b + 18}" text-anchor="middle">${t}</text>`; });
+            axis += `<text x="${m.l + pw / 2}" y="${VH - 2}" text-anchor="middle">threads</text>`;
+            let bars = '';
+            results.forEach(r => {
+                const i = threadCounts.indexOf(r.T);
+                const x = X(i) - bw / 2, y = Y(r.speedup), h = Y(0) - y, rr = Math.min(4, h);
+                bars += `<path class="bar" d="M${x},${Y(0)} V${y + rr} Q${x},${y} ${x + rr},${y} H${x + bw - rr} Q${x + bw},${y} ${x + bw},${y + rr} V${Y(0)} Z">` +
+                    `<title>${r.T} thread${r.T > 1 ? 's' : ''}: ${r.speedup.toFixed(2)}× speedup, ${r.ms.toFixed(0)} ms, ${(100 * r.speedup / r.T).toFixed(0)}% efficiency</title></path>` +
+                    `<text class="val" x="${X(i)}" y="${y - 6}" text-anchor="middle">${r.speedup.toFixed(1)}×</text>`;
+            });
+            const ideal = threadCounts.map((t, i) => `${X(i)},${Y(t)}`).join(' ');
+            const lastI = n - 1;
+            chart.innerHTML = `<div class="chart-title">Speedup vs. threads</div>` +
+                `<div class="chart-sub">Fixed total workload (strong scaling) · measured on your device · hover bars for details</div>` +
+                `<svg viewBox="0 0 ${VW} ${VH}" role="img" aria-label="Bar chart of measured speedup per thread count against ideal linear speedup">` +
+                `<g class="grid">${g}</g><g class="axis">${axis}</g>${bars}` +
+                `<polyline class="ideal" points="${ideal}"/>` +
+                `<text class="lbl" x="${X(lastI) + bw / 2 + 4}" y="${Y(threadCounts[lastI]) + 4}">ideal</text></svg>`;
+        }
+
+        function drawTable(results) {
+            tbody.innerHTML = results.map(r =>
+                `<tr><td>${r.T}</td><td>${r.ms.toFixed(0)} ms</td><td>${r.speedup.toFixed(2)}×</td>` +
+                `<td>${(100 * r.speedup / r.T).toFixed(0)}%</td><td>${r.pi.toFixed(5)}</td></tr>`).join('');
+        }
+
+        async function run() {
+            if (running || !supported) return;
+            running = true;
+            runBtn.disabled = true;
+            if (!url) url = URL.createObjectURL(new Blob([workerSrc], { type: 'text/javascript' }));
+            const total = +nIn.value * 1e6;
+            const results = [];
+            tbody.innerHTML = '';
+            drawChart(results);
+            try {
+                for (const T of threadCounts) {
+                    runBtn.textContent = `Running ${T} thread${T > 1 ? 's' : ''}…`;
+                    const r = await runOnce(T, total);
+                    r.speedup = results.length ? results[0].ms / r.ms : 1;
+                    results.push(r);
+                    drawChart(results); drawTable(results);
+                }
+                const best = results[results.length - 1];
+                toast(`⚡ ${best.T} threads → ${best.speedup.toFixed(1)}× faster · π ≈ ${best.pi.toFixed(5)}`);
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="5">Benchmark failed: ${String(e.message || e).replace(/</g, '&lt;')}</td></tr>`;
+            }
+            runBtn.textContent = 'Run again';
+            runBtn.disabled = false;
+            running = false;
+        }
+        runBtn.addEventListener('click', run);
+        drawChart([]);
+        if (!supported) runBtn.disabled = true;
+        return { run };
+    })();
+
     /* =========================================================
        Projects: filter + tilt
        ========================================================= */
@@ -740,7 +1023,10 @@
     const commands = [
         { icon: '👋', label: 'Go to About', hint: 'section', run: goto('#about') },
         { icon: '💼', label: 'Go to Experience', hint: 'section', run: goto('#experience') },
-        { icon: '🔬', label: 'Go to Metalens Lab', hint: 'section', run: goto('#lab') },
+        { icon: '🔬', label: 'Go to Simulation Lab', hint: 'section', run: goto('#lab') },
+        { icon: '🧪', label: 'Lab: reaction-diffusion PDE solver', hint: 'lab', run: () => { showTab('pde'); goto('#lab')(); } },
+        { icon: '🔭', label: 'Lab: metalens wave-optics simulation', hint: 'lab', run: () => { showTab('optics'); goto('#lab')(); } },
+        { icon: '⚡', label: 'Lab: run parallel scaling benchmark', hint: 'hpc', run: () => { showTab('hpc'); goto('#lab')(); setTimeout(hpc.run, 600); } },
         { icon: '🧪', label: 'Go to Projects', hint: 'section', run: goto('#projects') },
         { icon: '📄', label: 'Go to Publications', hint: 'section', run: goto('#publications') },
         { icon: '✉️', label: 'Go to Contact', hint: 'section', run: goto('#contact') },
@@ -750,8 +1036,8 @@
         { icon: '🐙', label: 'Open GitHub profile', hint: 'link', run: () => open('https://github.com/arnab-mkj', '_blank', 'noopener') },
         { icon: '💼', label: 'Open LinkedIn profile', hint: 'link', run: () => open('https://www.linkedin.com/in/arnab-mukherjee-05/', '_blank', 'noopener') },
         { icon: '🎮', label: 'Play tic-tac-toe', hint: 'fun', run: openGame },
-        { icon: '🟥', label: 'Lab: switch to red light (650 nm)', hint: 'lab', run: () => { lab.setLambda(650); goto('#lab')(); } },
-        { icon: '🟦', label: 'Lab: switch to blue light (450 nm)', hint: 'lab', run: () => { lab.setLambda(450); goto('#lab')(); } },
+        { icon: '🟥', label: 'Lab: switch to red light (650 nm)', hint: 'lab', run: () => { showTab('optics'); lab.setLambda(650); goto('#lab')(); } },
+        { icon: '🟦', label: 'Lab: switch to blue light (450 nm)', hint: 'lab', run: () => { showTab('optics'); lab.setLambda(450); goto('#lab')(); } },
         { icon: '🧹', label: 'Clear hero light emitters', hint: 'hero', run: wave.clearEmitters },
         { icon: '✨', label: 'Make it rain photons', hint: 'secret', run: photonRain }
     ];

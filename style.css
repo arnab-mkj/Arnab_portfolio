@@ -241,9 +241,11 @@ kbd {
 .stat-num { font-size: 2.4rem; font-weight: 700; letter-spacing: -.03em; line-height: 1; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .stat-label { color: var(--muted); font-size: .85rem; }
 
-.skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 72px; }
+.skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.skill-card { display: flex; flex-direction: column; }
+.skill-card > p { font-size: .92rem; margin: 0 0 16px; flex: 1; }
 .skill-card { padding: 24px; }
-.skill-card h3 { margin: 10px 0 14px; font-size: 1.1rem; }
+.skill-card h3 { margin: 10px 0 8px; font-size: 1.15rem; }
 .skill-icon { font-size: 1.6rem; }
 
 /* ---------- tilt cards ---------- */
@@ -301,6 +303,7 @@ kbd {
 
 /* ---------- lab ---------- */
 .lab { display: grid; grid-template-columns: 1.6fr 1fr; gap: 0; overflow: hidden; }
+.lab > * { min-width: 0; }
 .lab-stage { position: relative; background: #000; min-height: 320px; }
 .lab-stage canvas { width: 100%; height: 100%; display: block; aspect-ratio: 16 / 10; }
 .lab-readout {
@@ -325,6 +328,40 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
 .switch input:checked + span { background: color-mix(in srgb, var(--accent) 35%, transparent); }
 .switch input:checked + span::after { transform: translateX(16px); background: var(--accent); }
 .switch input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* lab tabs & panels */
+.lab-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.lab-tab {
+    padding: 10px 18px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border);
+    color: var(--muted); font-weight: 500; transition: all .2s;
+}
+.lab-tab:hover { color: var(--text); border-color: color-mix(in srgb, var(--accent) 50%, var(--border)); }
+.lab-tab.active { color: var(--text); background: var(--surface-strong); border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+.lab-panel[hidden] { display: none; }
+.lab-panel { animation: fade .35s ease; }
+.lab-intro { max-width: 760px; margin: 0 0 18px; font-size: .95rem; }
+.lab-desc { margin: 0; font-size: .9rem; color: var(--muted); }
+.lab-desc strong { color: var(--text); }
+.lab-desc code { font-size: .78em; }
+.preset-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.preset-row .filter { padding: 6px 12px; font-size: .82rem; }
+.lab-stage canvas#rdCanvas { cursor: crosshair; touch-action: none; image-rendering: auto; }
+.lab-stage--light { background: var(--bg-alt); display: flex; align-items: stretch; }
+.hpc-chart { width: 100%; padding: 20px 16px 12px; display: flex; flex-direction: column; min-height: 320px; }
+.hpc-chart svg { width: 100%; flex: 1; overflow: visible; }
+.hpc-chart .axis text, .hpc-chart .lbl { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.hpc-chart .val { fill: var(--text); font-family: var(--mono); font-size: 11px; }
+.hpc-chart .grid line { stroke: var(--border); }
+.hpc-chart .bar { fill: var(--accent); transition: opacity .2s; }
+.hpc-chart .bar:hover { opacity: .75; }
+.hpc-chart .ideal { stroke: var(--muted); stroke-width: 2; stroke-dasharray: 5 5; fill: none; }
+.hpc-chart .chart-title { font-weight: 600; font-size: .95rem; margin-bottom: 2px; }
+.hpc-chart .chart-sub { color: var(--muted); font-size: .8rem; margin-bottom: 8px; }
+.hpc-empty { flex: 1; display: grid; place-items: center; color: var(--muted); font-size: .9rem; text-align: center; padding: 20px; }
+.hpc-table-wrap { overflow-x: auto; }
+.hpc-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: .78rem; }
+.hpc-table th { text-align: left; color: var(--muted); font-weight: 500; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.hpc-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
 
 /* ---------- projects ---------- */
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
@@ -477,6 +514,8 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
     .section { padding: 88px 0; }
 }
 @media (max-width: 560px) {
+    .hpc-chart { min-height: 260px; padding: 16px 8px 8px; }
+    .lab-controls { padding: 20px; }
     body { font-size: 16px; }
     .skills-grid, .stats { grid-template-columns: 1fr; }
     .projects-grid { grid-template-columns: 1fr; }

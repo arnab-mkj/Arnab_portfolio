@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arnab Mukherjee — Computational Optics & Scientific ML</title>
-    <meta name="description" content="Arnab Mukherjee — Master's student in Computational Material Science (TU Bergakademie Freiberg), Master's thesis at Carl ZEISS AG on deep learning surrogates for metasurface simulation.">
+    <title>Arnab Mukherjee — Computational Scientist</title>
+    <meta name="description" content="Arnab Mukherjee — computational scientist working in scientific computing, HPC, physics simulation and photonics. M.Sc. Computational Material Science (TU Bergakademie Freiberg), Master's thesis at Carl ZEISS AG.">
     <meta name="theme-color" content="#07080d">
-    <meta property="og:title" content="Arnab Mukherjee — Computational Optics & Scientific ML">
-    <meta property="og:description" content="Metasurfaces, photonics simulation and physics-informed deep learning.">
+    <meta property="og:title" content="Arnab Mukherjee — Computational Scientist">
+    <meta property="og:description" content="Scientific computing, HPC, computational physics, photonics and scientific machine learning.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://arnabmkj.netlify.app/">
     <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
@@ -69,15 +69,16 @@
                     <span class="line gradient-text">Mukherjee</span>
                 </h1>
                 <p class="hero-subtitle reveal">
-                    I build <span class="rotator" id="rotator">physics-informed neural networks</span><span class="caret">|</span>
+                    I build <span class="rotator" id="rotator">numerical solvers for physics</span><span class="caret">|</span>
                 </p>
                 <p class="hero-lede reveal">
-                    Computational material scientist working where <strong>photonics</strong>, <strong>numerical simulation</strong>
-                    and <strong>deep learning</strong> meet — designing metasurfaces and teaching neural networks to solve Maxwell's equations faster.
+                    Computational scientist turning physics into fast, reliable software — across <strong>scientific computing</strong>,
+                    <strong>high-performance computing</strong>, <strong>computational physics</strong> and <strong>photonics</strong>,
+                    with machine learning where classical solvers get too slow.
                 </p>
                 <div class="hero-actions reveal">
                     <a href="#experience" class="btn btn--primary">See my work <span aria-hidden="true">→</span></a>
-                    <a href="#lab" class="btn btn--ghost">Try the metalens lab</a>
+                    <a href="#lab" class="btn btn--ghost">Explore the simulation lab</a>
                 </div>
                 <div class="hero-meta reveal">
                     <span>📍 Heidenheim, Germany</span>
@@ -101,19 +102,20 @@
                 <div class="about-grid">
                     <div class="about-text reveal">
                         <p class="big">
-                            I'm a Master's student in <strong>Computational Material Science</strong> at TU Bergakademie Freiberg,
-                            currently writing my thesis at <strong>Carl ZEISS AG</strong>.
+                            I'm a <strong>computational scientist</strong> who enjoys the full path from a physical model
+                            to a numerical method to code that runs fast on real hardware.
                         </p>
                         <p>
-                            My work sits at the intersection of optics and machine learning: I benchmark physics-informed and
-                            operator-based deep learning surrogates (CNNs, Fourier Neural Operators, Maxwell-residual networks)
-                            for full-wave electromagnetic simulation of large-scale optical metasurfaces. Before that I built
-                            metalens design pipelines and ray tracers at ZEISS, trained surrogate models for RCWA/FDTD at PlanOpSim,
-                            and classified semiconductor defects from acoustic microscopy signals at TU Freiberg.
+                            I'm finishing an M.Sc. in <strong>Computational Material Science</strong> at TU Bergakademie Freiberg,
+                            with coursework in scientific computing, high-performance computing, solid-state physics, non-linear FEM
+                            and stochastics, and I'm writing my Master's thesis at <strong>Carl ZEISS AG</strong>.
                         </p>
                         <p>
-                            Earlier, I spent a year as a software engineer at LTIMindtree — so I care about clean, traceable code
-                            as much as I care about the physics.
+                            My work so far spans <strong>electromagnetic & optical simulation</strong> (FEM, RCWA, FDTD, ray tracing),
+                            <strong>materials and signal analysis</strong> (scanning acoustic microscopy, SAFT),
+                            <strong>chemical kinetics</strong> and <strong>scientific machine learning</strong>
+                            (PINNs, neural operators, surrogate models). Before research I spent a year as a software engineer at LTIMindtree,
+                            so I care about clean, tested, traceable code as much as the physics behind it.
                         </p>
                     </div>
                     <div class="about-side reveal">
@@ -138,35 +140,44 @@
                     </div>
                 </div>
 
-                <!-- Skills -->
+                <!-- Focus areas -->
+                <h3 class="sub-head reveal">What I work on</h3>
                 <div class="skills-grid">
                     <div class="skill-card glass reveal tilt">
-                        <div class="skill-icon">⌨️</div>
-                        <h3>Programming</h3>
-                        <div class="chips">
-                            <span>Python</span><span>MATLAB</span><span>C / C++</span><span>Linux · Bash</span><span>Git</span><span>JavaScript</span>
-                        </div>
+                        <div class="skill-icon">🧮</div>
+                        <h3>Scientific Computing</h3>
+                        <p class="muted">Numerical methods for ODEs & PDEs, linear algebra, optimisation, stochastic methods — implemented robustly and validated against reference solutions.</p>
+                        <div class="chips small"><span>Finite differences</span><span>FEM</span><span>Optimisation</span><span>Stochastics</span><span>NumPy / SciPy</span></div>
                     </div>
                     <div class="skill-card glass reveal tilt">
-                        <div class="skill-icon">🔬</div>
-                        <h3>Optics & Photonics</h3>
-                        <div class="chips">
-                            <span>Metasurfaces</span><span>Metalenses</span><span>Diffractive optics</span><span>RCWA / FDTD</span><span>FEM (JCMWave)</span><span>Ray tracing</span><span>LPA / ODA</span>
-                        </div>
-                    </div>
-                    <div class="skill-card glass reveal tilt">
-                        <div class="skill-icon">🧠</div>
-                        <h3>Machine Learning</h3>
-                        <div class="chips">
-                            <span>PyTorch</span><span>JAX · Flax · Optax</span><span>CNN / U-Net</span><span>PINNs</span><span>Neural Operators</span><span>DeepONet</span>
-                        </div>
+                        <div class="skill-icon">⚡</div>
+                        <h3>High-Performance Computing</h3>
+                        <p class="muted">Writing simulation code with performance in mind — compiled languages, vectorised numerics and parallel workloads, backed by graduate HPC coursework.</p>
+                        <div class="chips small"><span>C / C++</span><span>HPC</span><span>Parallel computing</span><span>Linux · Bash</span><span>Git</span></div>
                     </div>
                     <div class="skill-card glass reveal tilt">
                         <div class="skill-icon">⚛️</div>
-                        <h3>Materials & Simulation</h3>
-                        <div class="chips">
-                            <span>Materials simulation</span><span>Non-linear FEM</span><span>HPC</span><span>Cantera</span><span>Genetic algorithms</span><span>Signal & image processing</span>
-                        </div>
+                        <h3>Computational Physics & Materials</h3>
+                        <p class="muted">Modelling physical systems from solid-state physics to continuum mechanics and reaction kinetics.</p>
+                        <div class="chips small"><span>Solid-state physics</span><span>Non-linear FEM</span><span>Microstructures</span><span>Cantera</span><span>Materials simulation</span></div>
+                    </div>
+                    <div class="skill-card glass reveal tilt">
+                        <div class="skill-icon">🔬</div>
+                        <h3>Photonics & Optics</h3>
+                        <p class="muted">Full-wave and semi-analytical electromagnetic simulation, diffractive optics and optical system design.</p>
+                        <div class="chips small"><span>FEM (JCMWave)</span><span>RCWA / FDTD</span><span>Ray tracing</span><span>Metasurfaces</span><span>Tolerancing</span></div>
+                    </div>
+                    <div class="skill-card glass reveal tilt">
+                        <div class="skill-icon">🧠</div>
+                        <h3>Scientific Machine Learning</h3>
+                        <p class="muted">Physics-informed and operator-learning models that act as fast surrogates for expensive solvers.</p>
+                        <div class="chips small"><span>PyTorch</span><span>JAX · Flax</span><span>PINNs</span><span>Neural operators</span><span>CNN / U-Net</span></div>
+                    </div>
+                    <div class="skill-card glass reveal tilt">
+                        <div class="skill-icon">🛠️</div>
+                        <h3>Software Engineering</h3>
+                        <p class="muted">Industry experience shipping software: testing, risk tracking, traceability and working with stakeholders.</p>
+                        <div class="chips small"><span>Python</span><span>MATLAB</span><span>JavaScript</span><span>Testing</span><span>Atlassian</span></div>
                     </div>
                 </div>
             </div>
@@ -281,19 +292,70 @@
             </div>
         </section>
 
-        <!-- Metalens Lab -->
+        <!-- Simulation Lab -->
         <section id="lab" class="section">
             <div class="container">
                 <div class="section-head reveal">
                     <span class="section-index">03</span>
-                    <h2>Metalens Lab</h2>
+                    <h2>Simulation Lab</h2>
                 </div>
                 <p class="section-lede reveal">
-                    A tiny, live version of what I do at work. A plane wave hits a metasurface whose nano-pillars imprint a
-                    hyperbolic phase profile <code>φ(x) = −k(√(x² + f²) − f)</code>. Every pillar re-radiates as a Huygens source and the
-                    field below is computed in your browser by summing those wavelets. Change the parameters and watch the focus move.
+                    Three small, real simulations that run entirely in your browser — one each from computational physics,
+                    photonics and parallel computing. No pre-rendered videos: every pixel is computed live.
                 </p>
-                <div class="lab glass reveal">
+                <div class="lab-tabs reveal" role="tablist" aria-label="Simulations">
+                    <button class="lab-tab active" role="tab" aria-selected="true" aria-controls="panel-pde" id="tab-pde">🧪 PDE solver</button>
+                    <button class="lab-tab" role="tab" aria-selected="false" aria-controls="panel-optics" id="tab-optics">🔬 Wave optics</button>
+                    <button class="lab-tab" role="tab" aria-selected="false" aria-controls="panel-hpc" id="tab-hpc">⚡ Parallel computing</button>
+                </div>
+
+                <!-- PDE: Gray-Scott reaction-diffusion -->
+                <div class="lab-panel reveal" id="panel-pde" role="tabpanel" aria-labelledby="tab-pde">
+                    <div class="lab glass">
+                        <div class="lab-stage">
+                            <canvas id="rdCanvas" aria-label="Reaction-diffusion simulation"></canvas>
+                            <div class="lab-readout" id="rdReadout"></div>
+                        </div>
+                        <div class="lab-controls">
+                            <p class="lab-desc">
+                                The <strong>Gray–Scott model</strong>: two chemicals diffuse and react,
+                                <code>∂u/∂t = Dᵤ∇²u − uv² + F(1−u)</code>, <code>∂v/∂t = Dᵥ∇²v + uv² − (F+k)v</code>.
+                                Solved with an explicit finite-difference scheme on a periodic grid. <strong>Draw on the canvas</strong> to seed it.
+                            </p>
+                            <div class="preset-row" id="rdPresets">
+                                <button class="filter active" data-f="0.0545" data-k="0.062">Coral</button>
+                                <button class="filter" data-f="0.0367" data-k="0.0649">Mitosis</button>
+                                <button class="filter" data-f="0.035" data-k="0.065">Spots</button>
+                                <button class="filter" data-f="0.078" data-k="0.061">Worms</button>
+                            </div>
+                            <label class="ctrl">
+                                <span>Feed rate F <output id="rdFOut">0.0545</output></span>
+                                <input type="range" id="rdF" min="0.010" max="0.090" step="0.0005" value="0.0545">
+                            </label>
+                            <label class="ctrl">
+                                <span>Kill rate k <output id="rdKOut">0.0620</output></span>
+                                <input type="range" id="rdK" min="0.045" max="0.070" step="0.0005" value="0.062">
+                            </label>
+                            <label class="ctrl">
+                                <span>Steps per frame <output id="rdSpeedOut">12</output></span>
+                                <input type="range" id="rdSpeed" min="1" max="40" step="1" value="12">
+                            </label>
+                            <div class="ctrl-row">
+                                <button class="btn btn--ghost btn--sm" id="rdPause">Pause</button>
+                                <button class="btn btn--ghost btn--sm" id="rdReset">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Optics: metalens -->
+                <div class="lab-panel" id="panel-optics" role="tabpanel" aria-labelledby="tab-optics" hidden>
+                    <p class="lab-intro muted">
+                        A plane wave hits a metasurface lens whose nano-pillars imprint the phase
+                        <code>φ(x) = −k(√(x² + f²) − f)</code>. Each pillar re-radiates as a Huygens source and the field is the
+                        sum of those wavelets. Change the parameters and watch the focus move.
+                    </p>
+                    <div class="lab glass">
                     <div class="lab-stage">
                         <canvas id="lensCanvas" aria-label="Simulated intensity behind a metalens"></canvas>
                         <div class="lab-readout" id="labReadout"></div>
@@ -320,6 +382,37 @@
                             <label class="switch"><input type="checkbox" id="logToggle"><span></span>Log scale</label>
                         </div>
                         <p class="lab-note muted">Tip: detune the illumination from the design wavelength to see <em>chromatic aberration</em> — the focus shifts, just like in real metalenses.</p>
+                    </div>
+                </div>
+                </div>
+
+                <!-- HPC: parallel Monte Carlo -->
+                <div class="lab-panel" id="panel-hpc" role="tabpanel" aria-labelledby="tab-hpc" hidden>
+                    <div class="lab glass">
+                        <div class="lab-stage lab-stage--light">
+                            <div class="hpc-chart" id="hpcChart"></div>
+                        </div>
+                        <div class="lab-controls">
+                            <p class="lab-desc">
+                                <strong>Strong scaling, live on your CPU.</strong> Estimate π by Monte Carlo sampling, splitting a fixed
+                                workload across 1…<span id="hpcCores">N</span> <code>Web Workers</code> (real OS threads). The chart compares
+                                measured speedup with the ideal linear speedup. The gap is overhead, scheduling and
+                                <em>Amdahl's law</em>.
+                            </p>
+                            <label class="ctrl">
+                                <span>Samples <output id="hpcNOut">40 M</output></span>
+                                <input type="range" id="hpcN" min="10" max="200" step="10" value="40">
+                            </label>
+                            <div class="ctrl-row">
+                                <button class="btn btn--primary btn--sm" id="hpcRun">Run scaling test</button>
+                            </div>
+                            <div class="hpc-table-wrap">
+                                <table class="hpc-table" id="hpcTable">
+                                    <thead><tr><th>Threads</th><th>Time</th><th>Speedup</th><th>Efficiency</th><th>π estimate</th></tr></thead>
+                                    <tbody><tr><td colspan="5" class="muted">Press “Run scaling test”</td></tr></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -443,7 +536,7 @@
                 <div class="contact-card glass reveal">
                     <span class="section-index">06</span>
                     <h2>Let's build something <span class="gradient-text">brilliant</span>.</h2>
-                    <p class="muted">Open to conversations about computational optics, scientific machine learning, simulation tooling and roles after my thesis.</p>
+                    <p class="muted">Open to roles and conversations in scientific computing, HPC, simulation software, computational physics, photonics and scientific machine learning — from R&D teams to engineering groups.</p>
                     <div class="contact-actions">
                         <a href="mailto:amkjdeutsch1@gmail.com" class="btn btn--primary">Email me</a>
                         <button class="btn btn--ghost" id="copyEmail" data-email="amkjdeutsch1@gmail.com">
